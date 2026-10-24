@@ -1,0 +1,7 @@
+{
+  "name": "Docker build e push no GHCR",
+  "description": "Build com buildx e cache GHA; publica em ghcr.io na main e em tags v*, só builda em PR.",
+  "iconName": "octicon package",
+  "categories": ["Continuous integration", "Deployment", "Docker"],
+  "filePatterns": ["^Dockerfile$", "^Dockerfile\\..+$", "^.*\\.dockerfile$"]
+}

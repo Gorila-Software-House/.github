@@ -1,0 +1,100 @@
+name: Laravel CI
+
+on:
+  pull_request:
+  push:
+    branches: [$default-branch]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: laravel-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    name: Testes (PHP ${{ matrix.php }})
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+
+    strategy:
+      fail-fast: false
+      matrix:
+        # Para testar mais de uma versão: php: ["8.3", "8.4"]
+        php: ["8.3"]
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_DB: app_testing
+          POSTGRES_USER: app
+          POSTGRES_PASSWORD: secret # só do serviço efêmero do CI
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U app -d app_testing"
+          --health-interval 5s --health-timeout 3s --health-retries 10
+
+    # Variáveis de ambiente reais têm precedência sobre o .env copiado abaixo.
+    env:
+      APP_ENV: testing
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: "5432"
+      DB_DATABASE: app_testing
+      DB_USERNAME: app
+      DB_PASSWORD: secret
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: mbstring, intl, bcmath, pdo_pgsql
+          coverage: none
+          tools: composer:v2
+
+      - name: Diretório de cache do Composer
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: composer-${{ runner.os }}-php${{ matrix.php }}-${{ hashFiles('composer.lock') }}
+          restore-keys: composer-${{ runner.os }}-php${{ matrix.php }}-
+
+      - name: Instalar dependências
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Preparar .env de teste
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Pint
+        run: vendor/bin/pint --test
+
+      - name: PHPStan / Larastan
+        run: |
+          if [[ -x vendor/bin/phpstan ]]; then
+            vendor/bin/phpstan analyse --no-progress --error-format=github
+          else
+            echo "::notice title=phpstan::PHPStan não instalado; etapa ignorada."
+          fi
+
+      - name: Migrations
+        run: php artisan migrate --force
+
+      - name: Testes (Pest)
+        run: |
+          if [[ -x vendor/bin/pest ]]; then
+            vendor/bin/pest --ci
+          else
+            php artisan test
+          fi

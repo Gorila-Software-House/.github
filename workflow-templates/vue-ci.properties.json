@@ -1,0 +1,7 @@
+{
+  "name": "Vue CI",
+  "description": "Node com cache npm, npm ci, lint, type-check, Vitest e build (scripts opcionais).",
+  "iconName": "octicon beaker",
+  "categories": ["Continuous integration", "JavaScript", "TypeScript", "Vue"],
+  "filePatterns": ["^package\\.json$", "^vite\\.config\\..+$"]
+}

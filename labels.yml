@@ -1,0 +1,59 @@
+# Conjunto padrão de labels da organização.
+# Aplicar em todos os repos: scripts/apply-labels.sh
+# Dependabot: cada dependabot.yml precisa de `labels: ["dependências"]`
+# (o padrão dele é "dependencies", que não existe aqui).
+#
+# Cores: vermelho = problema, azul = trabalho novo, laranja = atenção,
+# verde = área técnica, cinza = encerrado sem ação, roxo = estado do fluxo.
+
+- name: bug
+  color: d73a4a
+  description: Algo não está funcionando
+- name: feature
+  color: 0e8a16
+  description: Funcionalidade nova
+- name: melhoria
+  color: a2eeef
+  description: Melhoria em algo que já existe
+- name: urgente
+  color: b60205
+  description: Precisa de atenção imediata
+- name: segurança
+  color: e11d21
+  description: Vulnerabilidade ou risco de segurança
+- name: dependências
+  color: 0366d6
+  description: Atualização de dependências
+- name: deploy
+  color: fbca04
+  description: Relacionado a publicação e entrega
+- name: documentação
+  color: 0075ca
+  description: Melhoria ou correção de documentação
+- name: dúvida
+  color: d876e3
+  description: Pedido de informação ou esclarecimento
+- name: bloqueado
+  color: 5319e7
+  description: Aguardando algo externo para continuar
+- name: em revisão
+  color: c5def5
+  description: Aguardando revisão
+- name: não vai ser feito
+  color: ffffff
+  description: Decidido que não será tratado
+- name: duplicado
+  color: cfd3d7
+  description: Já existe issue ou PR sobre o mesmo assunto
+- name: infra
+  color: 1d76db
+  description: Infraestrutura, Docker, CI/CD, servidores
+- name: front
+  color: 7057ff
+  description: Frontend e interface
+- name: back
+  color: 006b75
+  description: Backend e API
+- name: banco
+  color: bfd4f2
+  description: Banco de dados, schema e queries

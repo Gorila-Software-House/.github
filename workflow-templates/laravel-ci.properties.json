@@ -1,0 +1,7 @@
+{
+  "name": "Laravel CI",
+  "description": "PHP 8.3, Composer com cache, PostgreSQL 16, migrations, Pest, PHPStan (se instalado) e Pint.",
+  "iconName": "octicon beaker",
+  "categories": ["Continuous integration", "PHP", "Laravel"],
+  "filePatterns": ["^artisan$", "^composer\\.json$"]
+}
