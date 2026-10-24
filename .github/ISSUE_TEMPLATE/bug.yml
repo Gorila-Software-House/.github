@@ -1,0 +1,43 @@
+name: Bug
+description: Reportar um comportamento incorreto
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Não inclua senhas, tokens ou dados pessoais. Para vulnerabilidades, siga o SECURITY.md (não use issue pública).
+  - type: textarea
+    id: descricao
+    attributes:
+      label: O que aconteceu
+      description: Descreva o problema de forma objetiva.
+    validations:
+      required: true
+  - type: textarea
+    id: passos
+    attributes:
+      label: Passos para reproduzir
+      placeholder: |
+        1. Acesse...
+        2. Clique em...
+        3. Veja o erro
+    validations:
+      required: true
+  - type: textarea
+    id: esperado
+    attributes:
+      label: Comportamento esperado
+    validations:
+      required: true
+  - type: textarea
+    id: ambiente
+    attributes:
+      label: Ambiente
+      description: Versão, navegador, sistema operacional, ambiente (local, homologação, produção).
+  - type: textarea
+    id: logs
+    attributes:
+      label: Logs ou prints
+      description: Cole mensagens de erro ou anexe imagens.
+      render: shell
